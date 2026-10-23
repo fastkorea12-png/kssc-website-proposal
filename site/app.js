@@ -214,8 +214,7 @@ function closePop() {
 
 document.querySelectorAll('[data-copy]').forEach((el) => {
   el.tabIndex = 0;
-  el.setAttribute('role', 'button');
-  el.setAttribute('aria-label', `${COPY.items[el.dataset.copy].label} 바꾸기`);
+  el.title = `${COPY.items[el.dataset.copy].label} 바꾸기`;
   const open = () => { if (editing) openPop(el); };
   el.addEventListener('click', open);
   el.addEventListener('keydown', (event) => {
