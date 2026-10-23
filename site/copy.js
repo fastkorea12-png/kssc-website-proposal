@@ -67,6 +67,12 @@ window.KSSCOOP_COPY = {
       B: 'KSSCOOP과 함께 뛰는 방법',
       C: '이렇게 함께할 수 있어요',
     },
+    'news.title': {
+      label: '소식 제목',
+      A: 'KSSCOOP 소식',
+      B: '코트 밖 이야기',
+      C: 'KSSCOOP의 요즘',
+    },
     'contact.title': {
       label: '문의 제목',
       A: '함께할 이야기를\n기다립니다.',

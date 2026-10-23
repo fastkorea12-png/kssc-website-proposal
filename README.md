@@ -28,3 +28,11 @@ KSSCOOP 홈페이지 디자인 정의서와 검토용 시안입니다.
 `index.html` 디자인 정의서 / `site/` 검토용 시안 / `site/copy.js` 문구 가안 / `design-assets/` 정의서 화면 이미지
 
 v0.3 · 2026-10-23
+
+## 소식 자동 연결
+
+`site/feed.json`의 `channels`에 주소를 넣으면 GitHub Actions(`update-feed`)가 매일 오전 6시에 최신 게시물을 가져옵니다.
+
+- 블로그: `blog.url`(블로그 주소), `blog.rss`(예: `https://rss.blog.naver.com/블로그아이디.xml`)
+- 유튜브: `youtube.url`(채널 주소), `youtube.channelId`(UC로 시작하는 24자)
+- 인스타그램: `instagram.url`만 연결되며, 게시물은 `posts`에 직접 추가합니다.

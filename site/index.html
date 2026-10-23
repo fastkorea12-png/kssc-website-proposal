@@ -23,6 +23,7 @@
     <a href="#about">소개</a>
     <a href="#values">하는 일</a>
     <a href="#join">함께하기</a>
+    <a href="#news">소식</a>
     <a href="#disclosure">경영공시</a>
     <a class="nav-cta" href="#contact">문의하기</a>
   </nav>
@@ -31,19 +32,37 @@
 <main id="main">
   <section class="hero" id="top">
     <div class="hero-floor" aria-hidden="true"></div>
-    <!-- 반쪽 코트(FIBA). 세로 15m = 1000, 골밑이 오른쪽 -->
+    <!-- 반쪽 코트(FIBA). 세로 15m = 1000 단위(1m ≈ 66.7), 골밑이 오른쪽. 선 폭은 실제 규격 5cm -->
     <svg class="court" viewBox="0 0 1000 1000" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+      <defs>
+        <filter id="worn" x="0" y="0" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="noise"/>
+          <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 2.1" result="mask"/>
+          <feComposite in="SourceGraphic" in2="mask" operator="in"/>
+        </filter>
+      </defs>
       <rect class="paint" x="613" y="336.5" width="387" height="327"/>
-      <g class="lines">
-        <line class="line" x1="1000" y1="0" x2="1000" y2="1000" pathLength="1"/>
+      <g class="lines" filter="url(#worn)">
+        <line class="line" x1="998.3" y1="0" x2="998.3" y2="1000" pathLength="1"/>
         <rect class="line" x="613" y="336.5" width="387" height="327" pathLength="1"/>
         <path class="line" d="M613 380 A120 120 0 0 0 613 620" pathLength="1"/>
-        <path class="line soft" d="M613 380 A120 120 0 0 1 613 620" pathLength="1"/>
         <path class="line" d="M1000 60 H800.7 A450 450 0 0 0 800.7 940 H1000" pathLength="1"/>
         <path class="line" d="M895 417 A83 83 0 0 0 895 583" pathLength="1"/>
-        <line class="line strong" x1="920" y1="440" x2="920" y2="560" pathLength="1"/>
-        <circle class="line" cx="895" cy="500" r="15" pathLength="1"/>
+        <!-- 레인 표시: 엔드라인에서 1.75m, 블록 0.4m, 이후 0.85m 간격 -->
+        <g class="marks">
+          <rect x="856.7" y="329.8" width="26.6" height="6.7"/>
+          <rect x="856.7" y="663.5" width="26.6" height="6.7"/>
+          <rect x="798.3" y="329.8" width="3.3" height="6.7"/>
+          <rect x="798.3" y="663.5" width="3.3" height="6.7"/>
+          <rect x="741.6" y="329.8" width="3.3" height="6.7"/>
+          <rect x="741.6" y="663.5" width="3.3" height="6.7"/>
+          <rect x="684.9" y="329.8" width="3.3" height="6.7"/>
+          <rect x="684.9" y="663.5" width="3.3" height="6.7"/>
+        </g>
       </g>
+      <path class="line soft" d="M613 380 A120 120 0 0 1 613 620"/>
+      <line class="board" x1="920" y1="440" x2="920" y2="560"/>
+      <circle class="rim" cx="895" cy="500" r="15"/>
     </svg>
     <div class="hero-shade" aria-hidden="true"></div>
     <div class="wrap hero-inner">
@@ -76,7 +95,10 @@
 
   <section class="values" id="values">
     <div class="wrap">
-      <h2 data-copy="values.title"></h2>
+      <div class="section-head">
+        <h2 data-copy="values.title"></h2>
+        <p>KSSCOOP이 스포츠로 지키고 싶은 세 가지입니다.</p>
+      </div>
       <ul class="value-grid">
         <li>
           <figure><img src="assets/ai/value-healthy.jpg" width="1200" height="1500" alt="" loading="lazy" onerror="this.remove()"></figure>
@@ -103,12 +125,32 @@
 
   <section class="join" id="join">
     <div class="wrap">
-      <h2 data-copy="join.title"></h2>
+      <div class="section-head">
+        <h2 data-copy="join.title"></h2>
+        <p>궁금한 점이 있으면 편하게 연락해 주세요.</p>
+      </div>
       <ul class="join-grid">
-        <li><a href="#contact"><h3>교육 문의</h3><p>학교와 기관에 맞는 스포츠교육을 문의해 주세요.</p><span>문의하기</span></a></li>
-        <li><a href="#contact"><h3>기관 협력</h3><p>함께 만들 수 있는 활동을 제안해 주세요.</p><span>제안하기</span></a></li>
-        <li><a href="#contact"><h3>후원 안내</h3><p>KSSCOOP의 활동을 응원하는 방법을 안내해 드립니다.</p><span>안내 받기</span></a></li>
+        <li><a href="#contact"><h3>교육 문의</h3><p>학교와 기관에 맞는 스포츠교육을 문의해 주세요.</p><span class="join-cta">문의하기</span></a></li>
+        <li><a href="#contact"><h3>기관 협력</h3><p>함께 만들 수 있는 활동을 제안해 주세요.</p><span class="join-cta">제안하기</span></a></li>
+        <li><a href="#contact"><h3>후원 안내</h3><p>KSSCOOP의 활동을 응원하는 방법을 안내해 드립니다.</p><span class="join-cta">안내 받기</span></a></li>
       </ul>
+    </div>
+  </section>
+
+  <section class="news" id="news">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 data-copy="news.title"></h2>
+        <p>블로그, 인스타그램, 유튜브의 최신 게시물을 모아 보여 드립니다.</p>
+      </div>
+      <div class="news-tabs" role="tablist" aria-label="채널 선택">
+        <button type="button" role="tab" data-channel="all" aria-selected="true">전체</button>
+        <button type="button" role="tab" data-channel="blog" aria-selected="false">블로그</button>
+        <button type="button" role="tab" data-channel="instagram" aria-selected="false">인스타그램</button>
+        <button type="button" role="tab" data-channel="youtube" aria-selected="false">유튜브</button>
+      </div>
+      <ul class="news-grid" aria-live="polite"></ul>
+      <div class="channel-links"></div>
     </div>
   </section>
 
@@ -184,6 +226,7 @@
 <!--SITE-END-->
 
 <script src="copy.js"></script>
+<script src="news.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

@@ -1,0 +1,9 @@
+{
+  "updated": null,
+  "channels": {
+    "blog": { "name": "블로그", "url": "", "rss": "" },
+    "instagram": { "name": "인스타그램", "url": "" },
+    "youtube": { "name": "유튜브", "url": "", "channelId": "" }
+  },
+  "posts": []
+}
