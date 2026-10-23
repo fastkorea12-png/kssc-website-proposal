@@ -9,6 +9,7 @@
   const ORDER = ['blog', 'instagram', 'youtube'];
   const grid = document.querySelector('.news-grid');
   const links = document.querySelector('.channel-links');
+  const notice = document.querySelector('.news-notice');
   const tabs = document.querySelectorAll('.news-tabs [data-channel]');
   let feed = { channels: { blog: { name: '블로그' }, instagram: { name: '인스타그램' }, youtube: { name: '유튜브' } }, posts: [] };
   let current = 'all';
@@ -55,17 +56,33 @@
     return li;
   }
 
-  function placeholder(channel) {
-    const li = el('li', 'news-card is-empty');
+  // 실제 게시물이 없을 때 보여 주는 예시 카드. 실제 있었던 일처럼 보이는 내용은 쓰지 않는다.
+  const DEMO = {
+    blog: [
+      { title: '블로그 글 제목이 이곳에 두 줄까지 표시됩니다', thumb: 'assets/ai/gold-line-detail.jpg' },
+      { title: '최신 글이 올라오면 순서대로 바뀝니다', thumb: 'assets/ai/value-education.jpg' },
+    ],
+    instagram: [
+      { title: '인스타그램 게시물의 첫 문장이 이곳에 표시됩니다', thumb: 'assets/ai/value-healthy.jpg' },
+      { title: '사진과 함께 최신 게시물이 보입니다', thumb: 'assets/ai/value-everyone.jpg' },
+    ],
+    youtube: [
+      { title: '유튜브 영상 제목이 이곳에 표시됩니다', thumb: 'assets/ai/court-floor.jpg' },
+      { title: '새 영상이 올라오면 자동으로 추가됩니다', thumb: 'assets/ai/gold-line-detail.jpg' },
+    ],
+  };
+
+  function demoCard(channel, item) {
+    const li = el('li', `news-card is-demo is-${channel}`);
     const box = el('div', 'news-link');
     const thumb = el('div', 'thumb');
-    thumb.innerHTML = ICONS[channel];
+    const img = el('img');
+    img.src = item.thumb; img.alt = ''; img.loading = 'lazy';
+    img.onerror = () => { thumb.innerHTML = ICONS[channel]; };
+    thumb.append(img);
+    if (channel === 'youtube') thumb.append(Object.assign(el('span', 'play'), { innerHTML: ICONS.youtube }));
     const body = el('div', 'news-body');
-    body.append(
-      chip(channel),
-      el('h3', '', `${feed.channels[channel]?.name || channel} 최신 게시물이 여기에 표시됩니다`),
-      el('p', 'empty-note', '채널 주소를 확인한 뒤 자동으로 연결합니다.'),
-    );
+    body.append(chip(channel), el('h3', '', item.title), el('span', 'demo-tag', '예시'));
     box.append(thumb, body);
     li.append(box);
     return li;
@@ -79,7 +96,10 @@
       .sort((a, b) => new Date(b.date) - new Date(a.date))
       .slice(0, current === 'all' ? 6 : 6);
     if (posts.length) posts.forEach((p) => grid.append(postCard(p)));
-    channels.filter((c) => !posts.some((p) => p.channel === c)).forEach((c) => grid.append(placeholder(c)));
+    const waiting = channels.filter((c) => !posts.some((p) => p.channel === c));
+    // 예시는 채널을 번갈아 배치한다
+    [0, 1].forEach((i) => waiting.forEach((c) => grid.append(demoCard(c, DEMO[c][i]))));
+    notice.hidden = waiting.length === 0;
 
     links.replaceChildren();
     ORDER.forEach((c) => {
