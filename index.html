@@ -76,6 +76,26 @@ td.k { font-weight: 700; white-space: nowrap; }
 .btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 999px; background: var(--navy); color: #fff; text-decoration: none; font-weight: 700; font-size: 15px; }
 .btn.line { background: transparent; color: var(--navy); border: 1px solid var(--navy); }
 
+
+/* 항목별 의견 */
+h2 { align-items: center; }
+.comment-write {
+  margin-left: auto; font-size: 13px; font-weight: 700; color: var(--navy); text-decoration: none;
+  border: 1px solid var(--navy); border-radius: 999px; padding: 4px 14px; white-space: nowrap;
+}
+.comment-write:hover { background: var(--navy); color: #fff; }
+.comments { border-top: 1px dashed var(--line); padding-top: 12px; display: grid; gap: 8px; }
+.comments-head { font-size: 13px; font-weight: 700; color: var(--muted); }
+.comments-empty { font-size: 13px; color: var(--muted); }
+.comments-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.comments-list li { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--gold); border-radius: 6px; padding: 10px 14px; display: grid; gap: 4px; }
+.comments-list li.is-closed { border-left-color: var(--line); opacity: 0.75; }
+.comment-meta { display: flex; gap: 10px; font-size: 13px; color: var(--muted); flex-wrap: wrap; }
+.comment-meta b { color: var(--fg); }
+.comment-state { margin-left: auto; font-weight: 700; color: var(--gold-ink); }
+.comment-text { font-size: 15px; white-space: pre-line; }
+.comment-link { font-size: 13px; }
+
 footer { border-top: 1px solid var(--line); padding: 24px 0; color: var(--muted); font-size: 13px; }
 
 @media (max-width: 720px) {
@@ -150,7 +170,7 @@ footer { border-top: 1px solid var(--line); padding: 24px 0; color: var(--muted)
     </section>
 
     <section id="s3">
-      <h2><span>3.</span> 디자인 콘셉트: 센터 코트</h2>
+      <h2><span>3.</span> 디자인 콘셉트: 코트 플로어</h2>
       <ul class="items">
         <li>실제 농구 경기장 바닥을 무대로 삼아 스포츠 단체의 정체성 표현</li>
         <li>첫 화면 배경: 남색 나무 바닥 위에 골밑 영역(페인트존, 자유투 원, 3점 라인, 레인 표시)을 국제 규격(FIBA) 비율로 표시</li>
@@ -311,6 +331,8 @@ footer { border-top: 1px solid var(--line); padding: 24px 0; color: var(--muted)
         <li><b>문구 변경:</b> 시안에서 문구 클릭 → A·B·C 중 선택 또는 직접 수정</li>
         <li><b>일괄 변경:</b> 화면 하단 막대에서 A·B·C 선택 시 전체 문구 변경</li>
         <li><b>분위기 비교:</b> 화면 하단 막대에서 ‘어둡게 / 밝게’ 선택</li>
+        <li><b>정의서 의견:</b> 각 항목 제목 옆 ‘의견 남기기’ → GitHub 작성 화면에서 등록, 등록한 의견은 해당 항목 아래에 표시</li>
+        <li><b>메일 회신:</b> GitHub 사용이 어려우면 메일 회신으로 의견 전달 가능</li>
         <li><b>수정 요청:</b> 문구 클릭 → ‘이 문구에 수정 요청 남기기’ → GitHub 작성 화면에서 등록</li>
         <li><b>선택 결과 전달:</b> 화면 하단 ‘선택 결과 보내기’ → 선택 내용이 자동 입력된 GitHub 작성 화면에서 등록</li>
       </ul>
@@ -377,5 +399,6 @@ footer { border-top: 1px solid var(--line); padding: 24px 0; color: var(--muted)
 <footer>
   <div class="inner">KSSCOOP 홈페이지 디자인 정의서 v0.3 · 2026. 10. 23. · 검토용 초안</div>
 </footer>
+<script src="spec-comments.js?v=1"></script>
 </body>
 </html>
