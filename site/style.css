@@ -1,4 +1,4 @@
-/* Center court: the hero is a top-down basketball court with the KSSCOOP wordmark painted in the center circle.
+/* Center court: the hero is a full top-down basketball court with the KSSCOOP wordmark painted at center court.
    Everything below stays quiet so that one image carries the page. */
 :root {
   --court: #0f1f3d;       /* hero, contact */
@@ -65,30 +65,36 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--gold); outline-
     url("assets/ai/court-floor.jpg") center 20% / cover no-repeat,
     var(--court);
 }
-.court { position: absolute; top: 0; left: 50%; width: 1440px; height: 920px; transform: translateX(-50%); }
-.line { fill: none; stroke: var(--gold); stroke-width: 2; }
-.line-outer, .line-key { stroke-opacity: 0.22; }
-.line-half { stroke-opacity: 0.3; }
-.line-center { stroke-opacity: 0.85; stroke-width: 3; }
-.line-inner { stroke-opacity: 0.4; }
 .hero-inner {
   position: relative; display: flex; flex-direction: column; align-items: center; text-align: center;
-  padding: 80px 20px 80px; min-height: 920px;
+  padding: 64px 20px 88px;
 }
-/* 480px tall box from y=80 to y=560: its middle is the court's center spot (y=320) */
-.center-circle { height: 480px; display: grid; place-items: center; }
-.hero-logo { width: min(400px, 70vw); filter: drop-shadow(0 14px 36px rgba(0, 0, 0, 0.55)); }
-.hero h1 { font-size: clamp(42px, 6vw, 80px); line-height: 1.15; margin-top: 40px; text-shadow: 0 4px 24px rgba(0, 0, 0, 0.45); }
+
+/* Full FIBA court, logo painted at center court */
+.court-wrap { position: relative; width: min(1060px, 100%); aspect-ratio: 1440 / 790; }
+.court { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.surface { fill: rgba(255, 255, 255, 0.025); }
+.paint { fill: rgba(224, 180, 63, 0.16); }
+.paint-center { fill: rgba(224, 180, 63, 0.08); }
+.line { fill: none; stroke: var(--gold); stroke-width: 4; stroke-opacity: 0.85; }
+.line.dashed { stroke-dasharray: 14 12; stroke-opacity: 0.5; }
+.line.board { stroke-width: 6; stroke-opacity: 1; }
+.line.rim { stroke-width: 3; }
+.hero-logo {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 36%; filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.55));
+}
+.hero h1 { font-size: clamp(42px, 5.6vw, 76px); line-height: 1.15; margin-top: 52px; text-shadow: 0 4px 24px rgba(0, 0, 0, 0.45); }
 .hero-lead { font-size: 18px; line-height: 1.8; color: var(--on-court); margin-top: 22px; }
 .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 36px; }
 
 @media (prefers-reduced-motion: no-preference) {
-  .line { stroke-dasharray: 1; stroke-dashoffset: 0; animation: draw 1.6s cubic-bezier(.6, 0, .2, 1) both; }
-  .line-center { animation-delay: 0.2s; }
-  .line-inner { animation-delay: 0.5s; }
-  .hero-logo { animation: settle 0.9s 0.9s cubic-bezier(.2, .8, .2, 1) both; }
+  .lines .line[pathLength] { stroke-dasharray: 1; stroke-dashoffset: 0; animation: draw 1.8s cubic-bezier(.6, 0, .2, 1) both; }
+  .paint, .paint-center, .board, .rim, .dashed { animation: fade 0.8s 1.2s ease both; }
+  .hero-logo { animation: settle 0.9s 1s cubic-bezier(.2, .8, .2, 1) both; }
   @keyframes draw { from { stroke-dashoffset: 1; } }
-  @keyframes settle { from { opacity: 0; transform: scale(0.92); } }
+  @keyframes fade { from { opacity: 0; } }
+  @keyframes settle { from { opacity: 0; transform: translate(-50%, -50%) scale(0.92); } }
 }
 
 /* About */
@@ -187,8 +193,12 @@ dialog p { line-height: 1.8; color: var(--muted); margin-bottom: 20px; }
   .site-header .nav-cta { margin-top: 14px; text-align: center; border-bottom: 1px solid var(--gold); }
   html { scroll-padding-top: 66px; }
 
-  .hero-inner { min-height: 0; padding-bottom: 64px; }
-  .hero-logo { width: 72vw; }
+  .hero-inner { padding: 36px 20px 64px; }
+  /* 휴대폰: 코트를 세로로 세움 */
+  .court-wrap { width: min(340px, 86vw); aspect-ratio: 790 / 1440; }
+  .court { inset: auto; left: 50%; top: 50%; width: calc(min(340px, 86vw) * 1440 / 790); height: min(340px, 86vw); transform: translate(-50%, -50%) rotate(90deg); }
+  .hero-logo { width: 78%; }
+  .hero h1 { margin-top: 36px; }
   .hero-lead { font-size: 16px; }
   .hero-actions { width: 100%; }
   .hero-actions .button { flex: 1 1 140px; padding: 0 16px; }
