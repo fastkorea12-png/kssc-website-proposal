@@ -59,16 +59,16 @@
   // 실제 게시물이 없을 때 보여 주는 예시 카드. 실제 있었던 일처럼 보이는 내용은 쓰지 않는다.
   const DEMO = {
     blog: [
-      { title: '코트 위에서 배우는 협동의 가치', thumb: 'assets/ai/gold-line-detail.jpg' },
-      { title: '처음 농구를 시작하는 친구들을 위한 기본기 안내', thumb: 'assets/ai/value-education.jpg' },
+      { title: '코트 위에서 배우는 협동의 가치', thumb: 'assets/ai/sns-blog-1.jpg' },
+      { title: '처음 농구를 시작하는 친구들을 위한 기본기 안내', thumb: 'assets/ai/sns-blog-2.jpg' },
     ],
     instagram: [
-      { title: '오늘도 코트 위에서 함께 뛰었습니다 #\u2060모두의스포츠', thumb: 'assets/ai/value-healthy.jpg' },
-      { title: '운동화 끈 꽉 묶고, 이번 주도 시작 #\u2060KSSCOOP', thumb: 'assets/ai/value-everyone.jpg' },
+      { title: '오늘도 코트 위에서 함께 뛰었습니다 #\u2060모두의스포츠', thumb: 'assets/ai/sns-insta-1.jpg' },
+      { title: '운동화 끈 꽉 묶고, 이번 주도 시작 #\u2060KSSCOOP', thumb: 'assets/ai/sns-insta-2.jpg' },
     ],
     youtube: [
-      { title: '집에서도 할 수 있는 드리블 연습 3가지', thumb: 'assets/ai/court-floor.jpg' },
-      { title: 'KSSCOOP을 소개합니다', thumb: 'assets/ai/gold-line-detail.jpg' },
+      { title: '집에서도 할 수 있는 드리블 연습 3가지', thumb: 'assets/ai/sns-youtube-1.jpg' },
+      { title: 'KSSCOOP을 소개합니다', thumb: 'assets/ai/sns-youtube-2.jpg' },
     ],
   };
 

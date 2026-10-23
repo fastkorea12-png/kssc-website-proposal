@@ -167,7 +167,7 @@ a.news-link:hover { box-shadow: 0 10px 30px rgba(15, 31, 61, 0.12); }
 .news-card .thumb { position: relative; }
 .news-card .play { position: absolute; inset: 0; display: grid; place-items: center; color: var(--white); }
 .news-card .play svg { width: 64px; height: 64px; filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5)); }
-.news-card.is-demo .thumb img { object-position: center 82%; }
+.news-card.is-demo .thumb img { object-position: center; }
 .demo-tag { justify-self: start; font-size: 12px; font-weight: 700; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; }
 .channel-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px; }
 .channel-link {
@@ -318,4 +318,33 @@ body { padding-bottom: 84px; }
   body { padding-bottom: 150px; }
   .review-bar { bottom: 10px; padding: 10px; gap: 8px; }
   .review-status { max-width: 100%; text-align: center; flex-basis: 100%; }
+}
+
+/* ───────── 첫 화면 밝은 바탕 버전 (비교용) ───────── */
+.hero-light .site-header { background: #fbf8f2; color: var(--ink); border-bottom: 1px solid #e7dfd0; }
+.hero-light .site-header nav a:hover { color: var(--gold-ink); }
+.hero-light .site-header .nav-cta { border-color: var(--ink); color: var(--ink); }
+.hero-light .site-header .nav-cta:hover { background: var(--ink); color: var(--white); }
+.hero-light .menu-button span { background: var(--ink); }
+.hero-light .hero { background: #eadcc2; color: var(--ink); }
+.hero-light .hero-floor { background: url("assets/ai/court-floor-light.jpg") 60% 30% / cover no-repeat, #eadcc2; }
+.hero-light .line { stroke: var(--court); stroke-opacity: 0.85; }
+.hero-light .line.soft { stroke-opacity: 0.35; }
+.hero-light .marks rect { fill: var(--court); fill-opacity: 0.85; }
+.hero-light .paint { fill: var(--court); opacity: 0.14; }
+.hero-light .hero-shade {
+  background:
+    linear-gradient(90deg, rgba(251, 248, 242, 0.94) 0%, rgba(251, 248, 242, 0.78) 38%, rgba(251, 248, 242, 0.1) 70%, rgba(251, 248, 242, 0) 100%);
+}
+.hero-light .hero h1 { text-shadow: none; }
+.hero-light .hero-lead { color: #3d475c; }
+.hero-light .hero-logo { filter: drop-shadow(0 8px 20px rgba(15, 31, 61, 0.25)); }
+.hero-light .button.line { border-color: var(--ink); color: var(--ink); }
+.hero-light .button.line:hover { background: var(--ink); color: var(--white); }
+.review-theme { align-items: center; gap: 4px; }
+.review-theme .review-title { margin-right: 4px; }
+@media (max-width: 860px) {
+  .hero-light .site-header nav { background: #fbf8f2; border-top-color: #e7dfd0; }
+  .hero-light .site-header nav a { border-bottom-color: #e7dfd0; }
+  .hero-light .hero-shade { background: linear-gradient(180deg, rgba(251, 248, 242, 0.88) 0%, rgba(251, 248, 242, 0.7) 55%, rgba(251, 248, 242, 0.9) 100%); }
 }

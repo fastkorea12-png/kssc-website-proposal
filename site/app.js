@@ -39,6 +39,21 @@ document.querySelector('#privacy-link').addEventListener('click', (event) => {
 });
 privacy.querySelector('[data-close]').addEventListener('click', () => privacy.close());
 
+// 첫 화면 바탕 비교: 어둡게 / 밝게 (?hero=light 로 바로 열 수 있음)
+const THEME_KEY = 'ksscoop-hero-theme';
+function setHeroTheme(theme) {
+  document.body.classList.toggle('hero-light', theme === 'light');
+  document.querySelectorAll('.review-theme [data-theme]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.theme === theme)));
+  try { localStorage.setItem(THEME_KEY, theme); } catch { /* 저장 불가 환경 */ }
+}
+document.querySelectorAll('.review-theme [data-theme]').forEach((b) => b.addEventListener('click', () => setHeroTheme(b.dataset.theme)));
+{
+  const fromUrl = new URLSearchParams(location.search).get('hero');
+  let saved = null;
+  try { saved = localStorage.getItem(THEME_KEY); } catch { /* 저장 불가 환경 */ }
+  setHeroTheme(fromUrl === 'light' || (!fromUrl && saved === 'light') ? 'light' : 'dark');
+}
+
 // ───────── 문구 가안 ─────────
 // picks: { [key]: { v: 'A' | 'B' | 'C' | 'X', text?: string } } — X는 직접 쓴 문구
 const COPY = window.KSSCOOP_COPY;
@@ -106,7 +121,7 @@ function renderAll() {
     el.dataset.variant = pick ? pick.v : 'A';
   });
   const global = currentGlobalVariant();
-  document.querySelectorAll('.review-variants button').forEach((b) => {
+  document.querySelectorAll('.review-variants:not(.review-theme) button').forEach((b) => {
     b.setAttribute('aria-pressed', String(b.dataset.v === global));
   });
 }
@@ -130,7 +145,7 @@ async function savePicks(next, message) {
 }
 
 // 전체 가안 버튼
-const variantGroup = document.querySelector('.review-variants');
+const variantGroup = document.querySelector('.review-variants:not(.review-theme)');
 VARIANT_KEYS.forEach((v) => {
   const b = document.createElement('button');
   b.type = 'button';
