@@ -31,38 +31,23 @@
 <main id="main">
   <section class="hero" id="top">
     <div class="hero-floor" aria-hidden="true"></div>
-    <div class="hero-inner">
-      <!-- FIBA 규격 코트(28m × 15m)를 1m = 50 단위로 그림 -->
-      <div class="court-wrap">
-        <svg class="court" viewBox="-20 -20 1440 790" aria-hidden="true">
-          <rect class="surface" x="0" y="0" width="1400" height="750"/>
-          <rect class="paint" x="0" y="252.5" width="290" height="245"/>
-          <rect class="paint" x="1110" y="252.5" width="290" height="245"/>
-          <circle class="paint-center" cx="700" cy="375" r="90"/>
-          <g class="lines">
-            <rect class="line" x="0" y="0" width="1400" height="750" pathLength="1"/>
-            <line class="line" x1="700" y1="0" x2="700" y2="750" pathLength="1"/>
-            <circle class="line" cx="700" cy="375" r="90" pathLength="1"/>
-            <!-- 왼쪽 골밑 -->
-            <rect class="line" x="0" y="252.5" width="290" height="245" pathLength="1"/>
-            <path class="line" d="M290 285 A90 90 0 0 1 290 465" pathLength="1"/>
-            <path class="line dashed" d="M290 285 A90 90 0 0 0 290 465"/>
-            <path class="line" d="M0 45 H149.5 A337.5 337.5 0 0 1 149.5 705 H0" pathLength="1"/>
-            <path class="line" d="M78.75 312.5 A62.5 62.5 0 0 1 78.75 437.5" pathLength="1"/>
-            <line class="line board" x1="60" y1="330" x2="60" y2="420"/>
-            <circle class="line rim" cx="78.75" cy="375" r="11.25"/>
-            <!-- 오른쪽 골밑 -->
-            <rect class="line" x="1110" y="252.5" width="290" height="245" pathLength="1"/>
-            <path class="line" d="M1110 285 A90 90 0 0 0 1110 465" pathLength="1"/>
-            <path class="line dashed" d="M1110 285 A90 90 0 0 1 1110 465"/>
-            <path class="line" d="M1400 45 H1250.5 A337.5 337.5 0 0 0 1250.5 705 H1400" pathLength="1"/>
-            <path class="line" d="M1321.25 312.5 A62.5 62.5 0 0 0 1321.25 437.5" pathLength="1"/>
-            <line class="line board" x1="1340" y1="330" x2="1340" y2="420"/>
-            <circle class="line rim" cx="1321.25" cy="375" r="11.25"/>
-          </g>
-        </svg>
-        <img class="hero-logo" src="assets/ksscoop-logo.png" width="568" height="134" alt="KSSCOOP">
-      </div>
+    <!-- 반쪽 코트(FIBA). 세로 15m = 1000, 골밑이 오른쪽 -->
+    <svg class="court" viewBox="0 0 1000 1000" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+      <rect class="paint" x="613" y="336.5" width="387" height="327"/>
+      <g class="lines">
+        <line class="line" x1="1000" y1="0" x2="1000" y2="1000" pathLength="1"/>
+        <rect class="line" x="613" y="336.5" width="387" height="327" pathLength="1"/>
+        <path class="line" d="M613 380 A120 120 0 0 0 613 620" pathLength="1"/>
+        <path class="line soft" d="M613 380 A120 120 0 0 1 613 620" pathLength="1"/>
+        <path class="line" d="M1000 60 H800.7 A450 450 0 0 0 800.7 940 H1000" pathLength="1"/>
+        <path class="line" d="M895 417 A83 83 0 0 0 895 583" pathLength="1"/>
+        <line class="line strong" x1="920" y1="440" x2="920" y2="560" pathLength="1"/>
+        <circle class="line" cx="895" cy="500" r="15" pathLength="1"/>
+      </g>
+    </svg>
+    <div class="hero-shade" aria-hidden="true"></div>
+    <div class="wrap hero-inner">
+      <img class="hero-logo" src="assets/ksscoop-logo.png" width="568" height="134" alt="KSSCOOP">
       <h1 data-copy="hero.title"></h1>
       <p class="hero-lead" data-copy="hero.lead"></p>
       <div class="hero-actions">
