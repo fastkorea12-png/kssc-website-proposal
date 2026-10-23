@@ -115,7 +115,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--gold); outline-
 .ai-tag { position: absolute; right: 16px; bottom: 12px; font-size: 11px; color: rgba(255, 255, 255, 0.65); }
 
 /* Values: three portrait still-lifes */
-.values { padding: 120px 0; background: var(--paper); }
+.values { padding: 120px 0 56px; background: var(--paper); }
 .value-grid { list-style: none; margin: 44px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
 .value-grid figure { margin: 0 0 22px; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 4px; background: linear-gradient(160deg, #1b315c, var(--court-deep)); }
 .value-grid img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
@@ -320,7 +320,7 @@ body { padding-bottom: 84px; }
   .review-status { max-width: 100%; text-align: center; flex-basis: 100%; }
 }
 
-/* ───────── 첫 화면 밝은 바탕 버전 (비교용) ───────── */
+/* ───────── 밝은 분위기 버전 (비교용, 페이지 전체) ───────── */
 .hero-light .site-header { background: #fbf8f2; color: var(--ink); border-bottom: 1px solid #e7dfd0; }
 .hero-light .site-header nav a:hover { color: var(--gold-ink); }
 .hero-light .site-header .nav-cta { border-color: var(--ink); color: var(--ink); }
@@ -347,4 +347,79 @@ body { padding-bottom: 84px; }
   .hero-light .site-header nav { background: #fbf8f2; border-top-color: #e7dfd0; }
   .hero-light .site-header nav a { border-bottom-color: #e7dfd0; }
   .hero-light .hero-shade { background: linear-gradient(180deg, rgba(251, 248, 242, 0.88) 0%, rgba(251, 248, 242, 0.7) 55%, rgba(251, 248, 242, 0.9) 100%); }
+}
+
+/* 밝은 분위기: 어두웠던 영역도 밝은 원목 바닥으로 */
+.hero-light .statement {
+  color: var(--ink);
+  background: linear-gradient(rgba(251, 248, 242, 0.5), rgba(251, 248, 242, 0.62)), url("assets/ai/court-floor-light.jpg") center / cover no-repeat, #eadcc2;
+}
+.hero-light .statement-text { text-shadow: none; }
+.hero-light .ai-tag { color: rgba(20, 33, 61, 0.55); }
+.hero-light .join, .hero-light .contact {
+  color: var(--ink);
+  background: linear-gradient(rgba(251, 248, 242, 0.86), rgba(251, 248, 242, 0.9)), url("assets/ai/court-floor-light.jpg") center 40% / cover no-repeat, #eadcc2;
+}
+.hero-light .join .section-head > p, .hero-light .join-grid p { color: var(--muted); }
+.hero-light .join-grid a { background: rgba(255, 255, 255, 0.85); border-color: rgba(15, 31, 61, 0.14); }
+.hero-light .join-grid a:hover { background: var(--white); border-color: var(--gold-ink); }
+.hero-light .contact-list { border-top-color: var(--gold-ink); }
+.hero-light .contact-list div { border-bottom-color: rgba(15, 31, 61, 0.14); }
+.hero-light .contact-list dt { color: var(--gold-ink); }
+.hero-light .contact-list dd { color: var(--ink); }
+.hero-light .marquee { background: #fbf8f2; }
+.hero-light .marquee span { -webkit-text-stroke-color: rgba(133, 101, 18, 0.55); }
+
+/* ───────── 화려함: 절제된 움직임 ───────── */
+/* 로고 위로 빛이 스침 (로고 모양 그대로 가림) */
+.logo-shine { position: relative; display: inline-block; }
+.logo-shine::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.75) 50%, transparent 65%) -150% 0 / 200% 100% no-repeat;
+  -webkit-mask: url("assets/ksscoop-logo.png") center / contain no-repeat;
+          mask: url("assets/ksscoop-logo.png") center / contain no-repeat;
+}
+
+/* 키워드 띠 */
+.marquee { overflow: hidden; background: var(--paper); padding: 8px 0 56px; }
+.marquee-track { display: flex; width: max-content; gap: 64px; }
+.marquee span {
+  font: 400 clamp(48px, 7vw, 104px)/1.1 var(--display); letter-spacing: 0.01em; white-space: nowrap;
+  color: transparent; -webkit-text-stroke: 1.5px rgba(224, 180, 63, 0.75);
+}
+
+/* 버튼에 빛 스침 */
+.button { position: relative; overflow: hidden; }
+.button.gold { background: linear-gradient(135deg, #f0c95a, var(--gold) 55%, #c99a2a); }
+.button::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%) -150% 0 / 200% 100% no-repeat;
+}
+
+/* 카드: 떠오르며 금빛 테두리 */
+.value-grid figure { transition: transform 0.35s ease, box-shadow 0.35s ease; }
+.value-grid h3 { display: inline-block; background: linear-gradient(var(--gold), var(--gold)) 0 100% / 0 3px no-repeat; transition: background-size 0.35s ease; }
+.value-grid li:hover h3 { background-size: 100% 3px; }
+.join-grid a:hover { box-shadow: 0 0 0 1px var(--gold), 0 18px 40px rgba(224, 180, 63, 0.18); }
+.news-link { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.news-card:hover .news-link { transform: translateY(-4px); box-shadow: 0 14px 34px rgba(15, 31, 61, 0.14); }
+.news-card .thumb img { transition: transform 0.6s ease; }
+.news-card:hover .thumb img { transform: scale(1.05); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .logo-shine::after { animation: shine 5s 2.2s ease-in-out infinite; }
+  .button:hover::after { animation: shine 0.9s ease; }
+  .marquee-track { animation: marquee 38s linear infinite; }
+  .value-grid li:hover figure { transform: translateY(-6px); box-shadow: 0 16px 36px rgba(15, 31, 61, 0.22); }
+  @keyframes shine { 0% { background-position: -150% 0; } 30%, 100% { background-position: 250% 0; } }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+
+  /* 스크롤 등장: 스크립트가 켜질 때만 숨겼다가 보이게 함 */
+  .reveal-ready .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(.2, .8, .2, 1); }
+  .reveal-ready .reveal.is-visible { opacity: 1; transform: none; }
+
+  /* 강조 문장 배경이 천천히 움직임 (데스크톱) */
+  @media (min-width: 861px) and (hover: hover) {
+    .statement { background-attachment: fixed; }
+  }
 }

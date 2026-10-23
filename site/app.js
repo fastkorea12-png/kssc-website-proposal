@@ -54,6 +54,18 @@ document.querySelectorAll('.review-theme [data-theme]').forEach((b) => b.addEven
   setHeroTheme(fromUrl === 'light' || (!fromUrl && saved === 'light') ? 'light' : 'dark');
 }
 
+// 스크롤 등장 효과 (움직임 줄이기 설정이면 건너뜀)
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+  const targets = document.querySelectorAll('main section:not(.hero) .wrap > *, .value-grid > li, .join-grid > li');
+  document.querySelectorAll('.value-grid > li, .join-grid > li').forEach((li, i) => { li.style.transitionDelay = `${(i % 3) * 0.12}s`; });
+  targets.forEach((el) => el.classList.add('reveal'));
+  document.documentElement.classList.add('reveal-ready');
+  const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+  }), { rootMargin: '0px 0px -8% 0px' });
+  targets.forEach((el) => io.observe(el));
+}
+
 // ───────── 문구 가안 ─────────
 // picks: { [key]: { v: 'A' | 'B' | 'C' | 'X', text?: string } } — X는 직접 쓴 문구
 const COPY = window.KSSCOOP_COPY;
