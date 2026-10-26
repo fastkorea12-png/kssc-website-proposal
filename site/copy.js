@@ -1,4 +1,4 @@
-// 문구 가안. A 담백하게 · B 힘 있게 · C 따뜻하게. 줄바꿈은 \n.
+// 문구 가안. A 담백하게 · B 힘 있게 · C 따뜻하게. 줄바꿈은 \n. A만 있는 항목은 직접 고치기만 가능.
 // 사실 주장(연혁, 수치, 사업명)은 넣지 않는다. 기관 확인 전 제안 문구.
 window.KSSCOOP_COPY = {
   variants: {
@@ -43,6 +43,13 @@ window.KSSCOOP_COPY = {
       B: '우리가 지키는 세 가지',
       C: '스포츠로 만드는 세 가지 변화',
     },
+    'values.desc': { label: '하는 일 설명', A: 'KSSCOOP이 스포츠로 지키고 싶은 세 가지입니다.' },
+    'values.1.name': { label: '가치 1 이름', A: '건강한 사회' },
+    'values.1.en': { label: '가치 1 영문', A: 'Healthy Society' },
+    'values.2.name': { label: '가치 2 이름', A: '행복한 교육' },
+    'values.2.en': { label: '가치 2 영문', A: 'Happy Education' },
+    'values.3.name': { label: '가치 3 이름', A: '모두의 스포츠' },
+    'values.3.en': { label: '가치 3 영문', A: 'Everyone’s Sports' },
     'values.1': {
       label: '건강한 사회 설명',
       A: '소외되지 않고 함께 성장하는 공평한 사회를 위해 스포츠를 나눕니다.',
@@ -67,12 +74,21 @@ window.KSSCOOP_COPY = {
       B: 'KSSCOOP과 함께 뛰는 방법',
       C: '이렇게 함께할 수 있어요',
     },
+    'join.desc': { label: '함께하는 방법 설명', A: '궁금한 점이 있으면 편하게 연락해 주세요.' },
+    'join.1.title': { label: '함께하기 1 제목', A: '교육 문의' },
+    'join.1.text': { label: '함께하기 1 설명', A: '학교와 기관에 맞는 스포츠교육을 문의해 주세요.' },
+    'join.2.title': { label: '함께하기 2 제목', A: '기관 협력' },
+    'join.2.text': { label: '함께하기 2 설명', A: '함께 만들 수 있는 활동을 제안해 주세요.' },
+    'join.3.title': { label: '함께하기 3 제목', A: '후원 안내' },
+    'join.3.text': { label: '함께하기 3 설명', A: 'KSSCOOP의 활동을 응원하는 방법을 안내해 드립니다.' },
     'news.title': {
       label: '소식 제목',
       A: 'KSSCOOP 소식',
       B: '코트 밖 이야기',
       C: 'KSSCOOP의 요즘',
     },
+    'news.desc': { label: '소식 설명', A: '블로그, 인스타그램, 유튜브의 최신 게시물을 모아 보여 드립니다.' },
+    'disclosure.desc': { label: '경영공시 설명', A: '기부금 모금·활용실적과 결산·경영공시 자료를\n연도별로 확인하실 수 있습니다.' },
     'contact.title': {
       label: '문의 제목',
       A: '함께할 이야기를\n기다립니다.',

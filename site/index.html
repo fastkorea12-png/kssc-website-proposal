@@ -8,7 +8,7 @@
 <link rel="icon" href="assets/ksscoop-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="style.css?v=202610231632">
+<link rel="stylesheet" href="style.css?v=202610261241">
 </head>
 <body>
 <!--SITE-START-->
@@ -88,25 +88,25 @@
     <div class="wrap">
       <div class="section-head">
         <h2 data-copy="values.title"></h2>
-        <p>KSSCOOP이 스포츠로 지키고 싶은 세 가지입니다.</p>
+        <p data-copy="values.desc"></p>
       </div>
       <ul class="value-grid">
         <li>
           <figure><img src="assets/ai/value-healthy.jpg" width="1200" height="1500" alt="" loading="lazy" onerror="this.remove()"></figure>
-          <h3>건강한 사회</h3>
-          <span lang="en">Healthy Society</span>
+          <h3 data-copy="values.1.name"></h3>
+          <span lang="en" data-copy="values.1.en"></span>
           <p data-copy="values.1"></p>
         </li>
         <li>
           <figure><img src="assets/ai/value-education.jpg" width="1200" height="1500" alt="" loading="lazy" onerror="this.remove()"></figure>
-          <h3>행복한 교육</h3>
-          <span lang="en">Happy Education</span>
+          <h3 data-copy="values.2.name"></h3>
+          <span lang="en" data-copy="values.2.en"></span>
           <p data-copy="values.2"></p>
         </li>
         <li>
           <figure><img src="assets/ai/value-everyone.jpg" width="1200" height="1500" alt="" loading="lazy" onerror="this.remove()"></figure>
-          <h3>모두의 스포츠</h3>
-          <span lang="en">Everyone’s Sports</span>
+          <h3 data-copy="values.3.name"></h3>
+          <span lang="en" data-copy="values.3.en"></span>
           <p data-copy="values.3"></p>
         </li>
       </ul>
@@ -125,12 +125,12 @@
     <div class="wrap">
       <div class="section-head">
         <h2 data-copy="join.title"></h2>
-        <p>궁금한 점이 있으면 편하게 연락해 주세요.</p>
+        <p data-copy="join.desc"></p>
       </div>
       <ul class="join-grid">
-        <li><a href="#contact"><h3>교육 문의</h3><p>학교와 기관에 맞는 스포츠교육을 문의해 주세요.</p><span class="join-cta">문의하기</span></a></li>
-        <li><a href="#contact"><h3>기관 협력</h3><p>함께 만들 수 있는 활동을 제안해 주세요.</p><span class="join-cta">제안하기</span></a></li>
-        <li><a href="#contact"><h3>후원 안내</h3><p>KSSCOOP의 활동을 응원하는 방법을 안내해 드립니다.</p><span class="join-cta">안내 받기</span></a></li>
+        <li><a href="#contact"><h3 data-copy="join.1.title"></h3><p data-copy="join.1.text"></p><span class="join-cta">문의하기</span></a></li>
+        <li><a href="#contact"><h3 data-copy="join.2.title"></h3><p data-copy="join.2.text"></p><span class="join-cta">제안하기</span></a></li>
+        <li><a href="#contact"><h3 data-copy="join.3.title"></h3><p data-copy="join.3.text"></p><span class="join-cta">안내 받기</span></a></li>
       </ul>
     </div>
   </section>
@@ -139,7 +139,7 @@
     <div class="wrap">
       <div class="section-head">
         <h2 data-copy="news.title"></h2>
-        <p>블로그, 인스타그램, 유튜브의 최신 게시물을 모아 보여 드립니다.</p>
+        <p data-copy="news.desc"></p>
       </div>
       <div class="news-tabs" role="tablist" aria-label="채널 선택">
         <button type="button" role="tab" data-channel="all" aria-selected="true">전체</button>
@@ -157,7 +157,7 @@
     <div class="wrap">
       <div class="section-head">
         <h2>경영공시</h2>
-        <p>기부금 모금·활용실적과 결산·경영공시 자료를<br>연도별로 확인하실 수 있습니다.</p>
+        <p data-copy="disclosure.desc"></p>
       </div>
       <div class="year-tabs" role="tablist" aria-label="공시 연도"></div>
       <table class="doc-table">
@@ -202,7 +202,7 @@
 </dialog>
 
 <!-- 검토 도구: 문구 가안 선택, 직접 수정, 수정 요청 -->
-<div class="review-bar" data-uncommentable>
+<div class="review-bar">
   <a class="review-doc" href="../index.html">정의서</a>
   <span class="review-title">문구 가안</span>
   <div class="review-variants" role="group" aria-label="전체 문구 가안 선택"></div>
@@ -212,25 +212,44 @@
     <button type="button" data-theme="light" aria-pressed="false">밝게</button>
   </div>
   <button type="button" class="review-toggle" aria-pressed="true">문구 고치기 켜짐</button>
-  <button type="button" class="review-send">선택 결과 보내기</button>
+  <button type="button" class="review-load">최신 제출본 보기</button>
+  <button type="button" class="review-submit">제출하기</button>
   <span class="review-status" aria-live="polite"></span>
 </div>
-<div class="copy-pop" role="dialog" aria-label="문구 바꾸기" hidden data-uncommentable>
+<div class="copy-pop" role="dialog" aria-label="문구 바꾸기" hidden>
   <p class="pop-label"></p>
   <div class="pop-options"></div>
   <label class="pop-custom-label" for="pop-custom">직접 고치기</label>
-  <textarea id="pop-custom" rows="3" maxlength="300" placeholder="원하는 문구를 적어 주세요"></textarea>
+  <textarea id="pop-custom" rows="3" maxlength="400" placeholder="원하는 문구를 적어 주세요"></textarea>
+  <label class="pop-custom-label" for="pop-memo">메모 (선택)</label>
+  <textarea id="pop-memo" rows="2" maxlength="400" placeholder="이 문구에 대한 의견을 적어 주세요"></textarea>
   <div class="pop-actions">
-    <button type="button" class="pop-apply">직접 쓴 문구 적용</button>
-    <button type="button" class="pop-comment">이 문구에 수정 요청 남기기</button>
+    <button type="button" class="pop-apply">적용</button>
+    <button type="button" class="pop-reset">처음 문구로</button>
     <button type="button" class="pop-close">닫기</button>
   </div>
   <p class="pop-note"></p>
 </div>
+<dialog id="submit-dialog" class="submit-dialog">
+  <form method="dialog" id="submit-form">
+    <h2>고친 내용 제출하기</h2>
+    <p class="submit-summary"></p>
+    <label for="submit-name">이름</label>
+    <input id="submit-name" name="name" maxlength="40" required placeholder="예: 홍성욱">
+    <label for="submit-memo">전체 의견 (선택)</label>
+    <textarea id="submit-memo" name="memo" rows="3" maxlength="1000" placeholder="전체적으로 하실 말씀이 있으면 적어 주세요"></textarea>
+    <p class="submit-note">이름과 문구만 저장합니다. 연락처 등 개인정보는 적지 말아 주세요.</p>
+    <p class="submit-result" aria-live="polite"></p>
+    <div class="pop-actions">
+      <button type="submit" class="pop-apply" value="send">제출</button>
+      <button type="button" class="pop-close" data-close-submit>닫기</button>
+    </div>
+  </form>
+</dialog>
 <!--SITE-END-->
 
-<script src="copy.js?v=202610231632"></script>
-<script src="news.js?v=202610231632"></script>
-<script src="app.js?v=202610231632"></script>
+<script src="copy.js?v=202610261241"></script>
+<script src="news.js?v=202610261241"></script>
+<script src="app.js?v=202610261241"></script>
 </body>
 </html>

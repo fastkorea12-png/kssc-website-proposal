@@ -66,42 +66,28 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObse
   targets.forEach((el) => io.observe(el));
 }
 
-// ───────── 문구 가안 ─────────
-// picks: { [key]: { v: 'A' | 'B' | 'C' | 'X', text?: string } } — X는 직접 쓴 문구
+// ───────── 문구 가안 · 고치기 · 제출 ─────────
+// picks: { [key]: { v: 'A' | 'B' | 'C' | 'X', text?: string } } — X는 직접 고친 문구
+// notes: { [key]: string } — 문구별 메모
+// 제출하면 구글 시트에 한 줄로 저장되고, '최신 제출본 보기'로 어느 기기에서든 다시 띄운다.
+const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbxYKenQtaHoIvn8d7mBhQQdS-m5POKojR7wcA5ChM3ikP5_asE3kFf9D-U2ljMaYSmhyA/exec'; // 구글 Apps Script 웹 앱 (시트: KSSCOOP 시안 제출)
+const SUBMIT_KEY = 'ksscoop-review-2026';
 const COPY = window.KSSCOOP_COPY;
 const VARIANT_KEYS = Object.keys(COPY.variants);
 const LOCAL_KEY = 'ksscoop-copy-picks';
 let picks = {};
-let store = null;          // 공유 저장소(db 문서) 또는 null
-let canShare = false;      // 공유 저장 가능 여부
-let comments = null;       // 댓글 기능 또는 null
+let notes = {};
 let editing = true;
-const REPO = 'https://github.com/fastkorea12-png/kssc-website-proposal';
-
-// GitHub 이슈 작성 화면을 새 탭으로 연다 (GitHub 로그인 필요)
-function openIssue(title, body) {
-  const url = `${REPO}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
-  const a = document.createElement('a');
-  a.href = url; a.target = '_blank'; a.rel = 'noopener';
-  document.body.append(a); a.click(); a.remove();
-}
-
-function picksSummary() {
-  return Object.entries(COPY.items).map(([key, item]) => {
-    const pick = picks[key] || { v: 'A' };
-    const which = pick.v === 'X' ? '직접 수정' : `${pick.v}안`;
-    return `- ${item.label} (${which}): ${textFor(key).replace(/\n/g, ' ')}`;
-  }).join('\n');
-}
 
 const statusEl = document.querySelector('.review-status');
 const setStatus = (text) => { statusEl.textContent = text; };
+const hasVariants = (key) => VARIANT_KEYS.slice(1).some((v) => COPY.items[key][v]);
 
 function readLocal() {
   try { return JSON.parse(localStorage.getItem(LOCAL_KEY) || '{}'); } catch { return {}; }
 }
-function writeLocal(value) {
-  try { localStorage.setItem(LOCAL_KEY, JSON.stringify(value)); } catch { /* 저장 불가 환경 */ }
+function writeLocal() {
+  try { localStorage.setItem(LOCAL_KEY, JSON.stringify({ picks, notes })); } catch { /* 저장 불가 환경 */ }
 }
 
 function textFor(key) {
@@ -121,16 +107,17 @@ function renderText(el, text) {
 }
 
 function currentGlobalVariant() {
-  const keys = Object.keys(COPY.items);
+  const keys = Object.keys(COPY.items).filter(hasVariants);
   const first = (picks[keys[0]] || { v: 'A' }).v;
   return keys.every((k) => (picks[k] || { v: 'A' }).v === first) ? first : null;
 }
 
 function renderAll() {
   document.querySelectorAll('[data-copy]').forEach((el) => {
-    renderText(el, textFor(el.dataset.copy));
-    const pick = picks[el.dataset.copy];
-    el.dataset.variant = pick ? pick.v : 'A';
+    const key = el.dataset.copy;
+    renderText(el, textFor(key));
+    el.dataset.variant = picks[key] ? picks[key].v : 'A';
+    el.classList.toggle('has-note', Boolean(notes[key]));
   });
   const global = currentGlobalVariant();
   document.querySelectorAll('.review-variants:not(.review-theme) button').forEach((b) => {
@@ -138,22 +125,12 @@ function renderAll() {
   });
 }
 
-async function savePicks(next, message) {
-  picks = next;
+function update(nextPicks, nextNotes, message) {
+  picks = nextPicks;
+  notes = nextNotes;
   renderAll();
-  writeLocal(picks);
-  if (store && canShare) {
-    setStatus('저장 중…');
-    try {
-      await store.set({ picks });
-      setStatus(message || '저장했어요. 다른 검토자에게도 보여요.');
-    } catch (error) {
-      canShare = false;
-      setStatus('공유 저장이 안 돼서 이 브라우저에만 저장했어요.');
-    }
-  } else {
-    setStatus(message ? `${message} (이 브라우저에만 저장)` : '이 브라우저에만 저장했어요.');
-  }
+  writeLocal();
+  if (message) setStatus(`${message} 다 고치신 뒤 ‘제출하기’를 눌러 주세요.`);
 }
 
 // 전체 가안 버튼
@@ -164,17 +141,11 @@ VARIANT_KEYS.forEach((v) => {
   b.dataset.v = v;
   b.innerHTML = `<b>${v}</b> ${COPY.variants[v]}`;
   b.addEventListener('click', () => {
-    const next = {};
-    Object.keys(COPY.items).forEach((k) => { next[k] = { v }; });
-    savePicks(next, `모든 문구를 ${v}안으로 바꿨어요.`);
+    const next = { ...picks };
+    Object.keys(COPY.items).filter(hasVariants).forEach((k) => { next[k] = { v }; });
+    update(next, notes, `가안이 있는 문구를 모두 ${v}안으로 바꿨어요.`);
   });
   variantGroup.append(b);
-});
-
-// 선택 결과 보내기 (GitHub)
-document.querySelector('.review-send').addEventListener('click', () => {
-  openIssue('[문구 선택 결과] KSSCOOP 시안', `시안에서 고른 문구입니다.\n\n${picksSummary()}\n\n**추가 의견:**\n`);
-  setStatus('GitHub 창에서 내용을 확인하고 등록해 주세요.');
 });
 
 // 문구 고치기 켜기/끄기
@@ -193,44 +164,51 @@ const pop = document.querySelector('.copy-pop');
 const popLabel = pop.querySelector('.pop-label');
 const popOptions = pop.querySelector('.pop-options');
 const popCustom = pop.querySelector('#pop-custom');
+const popMemo = pop.querySelector('#pop-memo');
 const popNote = pop.querySelector('.pop-note');
-const popComment = pop.querySelector('.pop-comment');
 let popTarget = null;
+let popChoice = 'A';
 
 function openPop(el) {
   const key = el.dataset.copy;
   const item = COPY.items[key];
   const pick = picks[key] || { v: 'A' };
   popTarget = el;
+  popChoice = pick.v;
   popLabel.textContent = item.label;
   popOptions.replaceChildren();
-  VARIANT_KEYS.forEach((v) => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'pop-option';
-    b.setAttribute('aria-pressed', String(pick.v === v));
-    const tag = document.createElement('b');
-    tag.textContent = `${v}안 · ${COPY.variants[v]}`;
-    const body = document.createElement('span');
-    body.textContent = item[v].replace(/\n/g, ' ');
-    b.append(tag, body);
-    b.addEventListener('click', () => {
-      savePicks({ ...picks, [key]: { v } }, `${item.label}을(를) ${v}안으로 바꿨어요.`);
-      closePop();
+  popOptions.hidden = !hasVariants(key);
+  if (hasVariants(key)) {
+    VARIANT_KEYS.filter((v) => item[v]).forEach((v) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'pop-option';
+      b.setAttribute('aria-pressed', String(pick.v === v));
+      const tag = document.createElement('b');
+      tag.textContent = `${v}안 · ${COPY.variants[v]}`;
+      const body = document.createElement('span');
+      body.textContent = item[v].replace(/\n/g, ' ');
+      b.append(tag, body);
+      b.addEventListener('click', () => {
+        popOptions.querySelectorAll('.pop-option').forEach((o) => o.setAttribute('aria-pressed', String(o === b)));
+        popChoice = v;
+        popCustom.value = item[v];
+      });
+      popOptions.append(b);
     });
-    popOptions.append(b);
-  });
-  popCustom.value = pick.v === 'X' ? pick.text : '';
+  }
+  popCustom.value = textFor(key);
+  popMemo.value = notes[key] || '';
   popNote.textContent = '';
 
   pop.hidden = false;
   const rect = el.getBoundingClientRect();
-  const width = Math.min(380, window.innerWidth - 32);
+  const width = Math.min(400, window.innerWidth - 32);
   const left = Math.max(16, Math.min(rect.left + window.scrollX, window.scrollX + window.innerWidth - width - 16));
   pop.style.width = `${width}px`;
   pop.style.left = `${left}px`;
   pop.style.top = `${rect.bottom + window.scrollY + 10}px`;
-  pop.querySelector('.pop-option').focus();
+  (pop.querySelector('.pop-option') || popCustom).focus();
 }
 
 function closePop() {
@@ -242,18 +220,40 @@ function closePop() {
 document.querySelectorAll('[data-copy]').forEach((el) => {
   el.tabIndex = 0;
   el.title = `${COPY.items[el.dataset.copy].label} 바꾸기`;
-  const open = () => { if (editing) openPop(el); };
+  const open = (event) => {
+    if (!editing) return;
+    event?.preventDefault();
+    event?.stopPropagation();
+    openPop(el);
+  };
   el.addEventListener('click', open);
   el.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); open(); }
+    if (event.key === 'Enter' || event.key === ' ') open(event);
   });
 });
 
 pop.querySelector('.pop-apply').addEventListener('click', () => {
-  const text = popCustom.value.trim();
-  if (!text) { popNote.textContent = '문구를 적은 뒤 적용을 눌러 주세요.'; return; }
   const key = popTarget.dataset.copy;
-  savePicks({ ...picks, [key]: { v: 'X', text } }, '직접 쓴 문구를 적용했어요.');
+  const item = COPY.items[key];
+  const text = popCustom.value.trim();
+  if (!text) { popNote.textContent = '문구를 비워 둘 수는 없어요. ‘처음 문구로’를 눌러 주세요.'; return; }
+  const nextPicks = { ...picks };
+  const matched = VARIANT_KEYS.find((v) => item[v] && item[v] === text);
+  nextPicks[key] = matched ? { v: matched } : { v: 'X', text };
+  if (!matched && popChoice !== 'X' && item[popChoice] === text) nextPicks[key] = { v: popChoice };
+  const nextNotes = { ...notes };
+  const memo = popMemo.value.trim();
+  if (memo) nextNotes[key] = memo; else delete nextNotes[key];
+  update(nextPicks, nextNotes, `‘${item.label}’을(를) 바꿨어요.`);
+  closePop();
+});
+pop.querySelector('.pop-reset').addEventListener('click', () => {
+  const key = popTarget.dataset.copy;
+  const nextPicks = { ...picks };
+  delete nextPicks[key];
+  const nextNotes = { ...notes };
+  delete nextNotes[key];
+  update(nextPicks, nextNotes, `‘${COPY.items[key].label}’을(를) 처음 문구로 되돌렸어요.`);
   closePop();
 });
 pop.querySelector('.pop-close').addEventListener('click', closePop);
@@ -262,50 +262,103 @@ document.addEventListener('click', (event) => {
   if (!pop.hidden && !pop.contains(event.target) && !event.target.closest('[data-copy]')) closePop();
 });
 
-popComment.addEventListener('click', async () => {
-  const target = popTarget;
-  if (!target) return;
-  closePop();
-  if (!comments) {
-    const item = COPY.items[target.dataset.copy];
-    openIssue(`[문구 수정 요청] ${item.label}`,
-      `**위치:** ${item.label}\n**현재 문구:** ${textFor(target.dataset.copy).replace(/\n/g, ' ')}\n\n**요청 내용:**\n(여기에 적어 주세요)`);
-    setStatus('GitHub 창에서 요청을 적고 등록해 주세요.');
-    return;
-  }
+// 제출
+function changedItems() {
+  return Object.entries(COPY.items).map(([key, item]) => {
+    const pick = picks[key] || { v: 'A' };
+    return {
+      key,
+      label: item.label,
+      variant: pick.v === 'X' ? '직접 수정' : `${pick.v}안`,
+      changed: pick.v !== 'A',
+      text: textFor(key),
+      note: notes[key] || '',
+    };
+  });
+}
+
+const submitDialog = document.querySelector('#submit-dialog');
+const submitForm = document.querySelector('#submit-form');
+const submitResult = submitDialog.querySelector('.submit-result');
+document.querySelector('.review-submit').addEventListener('click', () => {
+  const items = changedItems();
+  const changed = items.filter((i) => i.changed).length;
+  const noted = items.filter((i) => i.note).length;
+  submitDialog.querySelector('.submit-summary').textContent =
+    `바꾼 문구 ${changed}개, 메모 ${noted}개를 제출합니다. 바꾸지 않은 문구도 함께 저장되어 전체 화면을 그대로 다시 볼 수 있어요.`;
+  submitResult.textContent = '';
+  try { submitForm.name.value = localStorage.getItem('ksscoop-reviewer') || ''; } catch { /* 저장 불가 환경 */ }
+  submitDialog.showModal();
+});
+submitDialog.querySelector('[data-close-submit]').addEventListener('click', () => submitDialog.close());
+
+submitForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const name = submitForm.name.value.trim();
+  if (!name) { submitResult.textContent = '이름을 적어 주세요.'; return; }
+  if (!SUBMIT_URL) { submitResult.textContent = '제출 기능을 연결하는 중입니다. 잠시 후 다시 시도해 주세요.'; return; }
+  try { localStorage.setItem('ksscoop-reviewer', name); } catch { /* 저장 불가 환경 */ }
+  const button = submitForm.querySelector('[type="submit"]');
+  button.disabled = true;
+  submitResult.textContent = '제출하는 중…';
   try {
-    const result = await comments.openComposer({ element: target });
-    if (!result.opened) setStatus('댓글 창을 열 수 없었어요. 오른쪽 위 댓글 버튼을 눌러 주세요.');
+    const res = await fetch(SUBMIT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({
+        key: SUBMIT_KEY,
+        name,
+        memo: submitForm.memo.value.trim(),
+        theme: document.body.classList.contains('hero-light') ? '밝게' : '어둡게',
+        items: changedItems(),
+      }),
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'failed');
+    submitResult.textContent = '제출했습니다. 감사합니다!';
+    setStatus(`${name}님 제출본을 저장했어요.`);
+    setTimeout(() => submitDialog.close(), 1400);
   } catch (error) {
-    comments = null;
-    setStatus('여기서는 댓글을 열 수 없어요. 오른쪽 위 댓글 버튼을 이용해 주세요.');
+    submitResult.textContent = '제출하지 못했어요. 잠시 후 다시 시도하시거나, 화면을 캡처해 문자로 보내 주세요.';
+  } finally {
+    button.disabled = false;
   }
 });
 
-// 시작: 로컬 선택을 먼저 보여 주고, 공유 저장소가 있으면 그것으로 맞춘다
-picks = readLocal();
-renderAll();
-setStatus('문구를 누르면 다른 안으로 바꾸거나 직접 고칠 수 있어요.');
-
-(async () => {
-  const claude = window.claude;
-  if (!claude || typeof claude.use !== 'function') return;
-  const [db, user, cm] = await Promise.all([
-    claude.use('db').catch(() => null),
-    claude.use('user').catch(() => null),
-    claude.use('comments').catch(() => null),
-  ]);
-  comments = cm;
-  if (db) {
-    store = db.doc('review/picks');
-    const allowed = user ? await user.can('data.write') : null;
-    canShare = allowed !== false;
-    if (!canShare) setStatus('보기 권한이라 선택은 이 브라우저에만 저장돼요. 의견은 댓글로 남겨 주세요.');
-    store.onSnapshot((snap) => {
-      if (snap.exists && snap.data().picks) {
-        picks = { ...snap.data().picks };
-        renderAll();
-      }
-    }, () => { store = null; });
+// 최신 제출본 불러오기
+async function loadLatest() {
+  if (!SUBMIT_URL) { setStatus('제출 기능을 연결하는 중입니다.'); return; }
+  setStatus('최신 제출본을 불러오는 중…');
+  try {
+    const res = await fetch(`${SUBMIT_URL}?action=latest&key=${encodeURIComponent(SUBMIT_KEY)}`);
+    const data = await res.json();
+    if (!data.ok || !data.submission) { setStatus('아직 제출된 내용이 없어요.'); return; }
+    const sub = data.submission;
+    const nextPicks = {};
+    const nextNotes = {};
+    (sub.items || []).forEach((i) => {
+      const item = COPY.items[i.key];
+      if (!item) return;
+      const matched = VARIANT_KEYS.find((v) => item[v] && item[v] === i.text);
+      if (matched && matched !== 'A') nextPicks[i.key] = { v: matched };
+      else if (!matched) nextPicks[i.key] = { v: 'X', text: i.text };
+      if (i.note) nextNotes[i.key] = i.note;
+    });
+    update(nextPicks, nextNotes);
+    if (sub.theme) setHeroTheme(sub.theme === '밝게' ? 'light' : 'dark');
+    setStatus(`${sub.name}님이 ${sub.time}에 제출한 화면입니다.`);
+  } catch (error) {
+    setStatus('제출본을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.');
   }
-})();
+}
+document.querySelector('.review-load').addEventListener('click', loadLatest);
+
+// 시작
+{
+  const saved = readLocal();
+  picks = saved.picks || (saved.notes ? {} : saved) || {};
+  notes = saved.notes || {};
+  renderAll();
+  if (new URLSearchParams(location.search).get('view') === 'latest') loadLatest();
+  else setStatus('문구를 누르면 바꾸거나 메모를 남길 수 있어요.');
+}

@@ -423,3 +423,21 @@ body { padding-bottom: 84px; }
     .statement { background-attachment: fixed; }
   }
 }
+
+/* 제출·메모 */
+.review-bar .review-submit { background: var(--gold); color: var(--court-deep); border-color: var(--gold); font-weight: 700; }
+.copy-editing [data-copy].has-note { outline-color: rgba(224, 180, 63, 0.9); }
+.copy-editing [data-copy].has-note::after { content: " ✎"; color: var(--gold); font-size: 0.6em; vertical-align: super; }
+.copy-pop textarea + .pop-custom-label { margin-top: 12px; }
+.pop-actions .pop-reset { color: var(--muted); }
+.submit-dialog { width: min(460px, 100% - 32px); max-width: none; color: var(--ink); }
+.submit-dialog form { display: grid; gap: 8px; }
+.submit-dialog h2 { font: 400 26px var(--display); margin: 0 0 4px; }
+.submit-dialog label { font-size: 14px; font-weight: 700; margin-top: 6px; }
+.submit-dialog input, .submit-dialog textarea {
+  width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font: 15px/1.6 var(--body);
+}
+.submit-summary { font-size: 14px; line-height: 1.7; color: var(--muted); margin: 0; }
+.submit-note { font-size: 12px; color: var(--muted); margin: 0; }
+.submit-result { font-size: 14px; font-weight: 700; color: var(--court); margin: 0; min-height: 1.4em; }
+.submit-dialog .pop-actions button:disabled { opacity: 0.5; cursor: wait; }
